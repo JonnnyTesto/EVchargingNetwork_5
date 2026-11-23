@@ -12,18 +12,15 @@ public class ElectricChargingStationNetwork {
     private static void showCustomers() {
         CustomerManager customerManager = new CustomerManager();
 
-        // US-01: register a customer
-        Customer anna = customerManager.registerCustomer(
-                "Anna Berger",
-                "anna.berger@example.com"
-        );
+        // US-01: register five customers
+        customerManager.registerCustomer("Anna Berger", "anna.berger@example.com");
+        customerManager.registerCustomer("Ben Huber", "ben.huber@example.com");
+        customerManager.registerCustomer("Clara Novak", "clara.novak@example.com");
+        customerManager.registerCustomer("David Gruber", "david.gruber@example.com");
+        customerManager.registerCustomer("Elif Yilmaz", "elif.yilmaz@example.com");
 
-        System.out.println("Registered customer: " +
-                anna.getId() + " " +
-                anna.getName() + " (" +
-                anna.getEmail() + ")");
-
-        System.out.println("Number of customers: " +
-                customerManager.getAllCustomers().size());
+        // print all customers (uses toString() of CustomerManager)
+        System.out.println(customerManager);
+        System.out.println("Number of customers: " + customerManager.getAllCustomers().size());
     }
 }

@@ -33,4 +33,12 @@ public class CustomerManager {
     public List<Customer> getAllCustomers() {
         return customers;
     }
+    @Override
+    public String toString() {
+        String result = "Customers:";
+        for (Customer customer : customers) {
+            result = result + "\n  " + customer.toString();
+        }
+        return result;
+    }
 }

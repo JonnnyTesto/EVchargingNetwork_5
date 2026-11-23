@@ -1,5 +1,10 @@
 package org.example;
 
+import io.cucumber.datatable.DataTable;
+
+import java.util.List;
+import java.util.Map;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -31,5 +36,17 @@ public class CustomerSteps {
         Customer customer = customerManager.findCustomer(id);
         assertThat(customer.getName()).isEqualTo(expectedName);
         assertThat(customer.getEmail()).isEqualTo(expectedEmail);
+    }
+    @When("the following customers register:")
+    public void the_following_customers_register(DataTable dataTable) {
+        List<Map<String, String>> rows = dataTable.asMaps();
+        for (Map<String, String> row : rows) {
+            customerManager.registerCustomer(row.get("Name"), row.get("Email"));
+        }
+    }
+
+    @Then("reading the customer list shows the following output:")
+    public void reading_the_customer_list_shows_the_following_output(String expectedOutput) {
+        assertThat(customerManager.toString()).isEqualTo(expectedOutput);
     }
 }
