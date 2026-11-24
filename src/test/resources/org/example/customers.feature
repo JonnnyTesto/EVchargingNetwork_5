@@ -31,3 +31,10 @@ Feature: E1 Register and Manage Account
         C04: David Gruber (david.gruber@example.com)
         C05: Elif Yilmaz (elif.yilmaz@example.com)
       """
+
+
+  @US-02
+  Scenario: AC US-02.1 New customer account starts with balance 0.00 and empty history
+    When the customer registers with name "Ben Huber" and email "ben.huber@example.com"
+    Then the balance of customer "C01" is 0.00
+    And the transaction history of customer "C01" is empty

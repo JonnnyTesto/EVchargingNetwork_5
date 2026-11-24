@@ -49,4 +49,18 @@ public class CustomerSteps {
     public void reading_the_customer_list_shows_the_following_output(String expectedOutput) {
         assertThat(customerManager.toString()).isEqualTo(expectedOutput);
     }
+
+    // US-02: a new account starts with balance 0.00
+    @Then("the balance of customer {string} is {double}")
+    public void theBalanceOfCustomerIs(String customerId, Double expectedBalance) {
+        Customer customer = customerManager.findCustomer(customerId);
+        assertThat(customer.getBalance()).isEqualTo(expectedBalance);
+    }
+
+    // US-02: a new account has no transactions yet
+    @Then("the transaction history of customer {string} is empty")
+    public void theTransactionHistoryOfCustomerIsEmpty(String customerId) {
+        Customer customer = customerManager.findCustomer(customerId);
+        assertThat(customer.getTransactionHistory()).isEmpty();
+    }
 }

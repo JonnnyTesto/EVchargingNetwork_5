@@ -1,10 +1,15 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Customer {
 
     private String id;
     private String name;
     private String email;
+    private double balance = 0.00;
+    private List<Transaction> transactionHistory = new ArrayList<>();
 
     public Customer(String id, String name, String email) {
         this.id = id;
@@ -23,6 +28,15 @@ public class Customer {
     public String getEmail() {
         return email;
     }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public List<Transaction> getTransactionHistory() {
+        return transactionHistory;
+    }
+
     @Override
     public String toString() {
         return id + ": " + name + " (" + email + ")";
