@@ -2,6 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Customer {
 
@@ -35,6 +36,12 @@ public class Customer {
 
     public List<Transaction> getTransactionHistory() {
         return transactionHistory;
+    }
+
+    // US-03: text the customer sees, e.g. "Balance of Anna Berger (C01): 0.00 EUR"
+    public String showBalance() {
+        return "Balance of " + name + " (" + id + "): "
+                + String.format(Locale.US, "%.2f", balance) + " EUR";
     }
 
     @Override

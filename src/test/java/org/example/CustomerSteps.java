@@ -19,6 +19,9 @@ public class CustomerSteps {
     // stores the message if a registration is rejected (US-02)
     private String errorMessage;
 
+    // stores the text the customer sees when viewing the balance (US-03)
+    private String displayedBalance;
+
     @Given("a new customer register")
     public void a_new_customer_register() {
         customerManager = new CustomerManager();
@@ -84,5 +87,18 @@ public class CustomerSteps {
         for (Customer customer : customerManager.getAllCustomers()) {
             assertThat(customer.getName()).isNotEqualTo(name);
         }
+    }
+
+    // US-03: the customer views the balance of their own account
+    @When("customer {string} views the balance")
+    public void customerViewsTheBalance(String customerId) {
+        Customer customer = customerManager.findCustomer(customerId);
+        displayedBalance = customer.showBalance();
+    }
+
+    // US-03: check the exact text the customer sees
+    @Then("the displayed balance is {string}")
+    public void theDisplayedBalanceIs(String expectedText) {
+        assertThat(displayedBalance).isEqualTo(expectedText);
     }
 }

@@ -46,3 +46,9 @@ Feature: E1 Register and Manage Account
     Then the registration is rejected with the message "Email already registered"
     And the number of customers is 1
     But no customer with the name "Anna B." exists
+
+  @US-03
+  Scenario: AC US-03.1 Customer views the balance of a new account
+    Given the customer registers with name "Anna Berger" and email "anna.berger@example.com"
+    When customer "C01" views the balance
+    Then the displayed balance is "Balance of Anna Berger (C01): 0.00 EUR"
