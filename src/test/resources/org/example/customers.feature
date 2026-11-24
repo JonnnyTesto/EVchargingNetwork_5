@@ -52,3 +52,15 @@ Feature: E1 Register and Manage Account
     Given the customer registers with name "Anna Berger" and email "anna.berger@example.com"
     When customer "C01" views the balance
     Then the displayed balance is "Balance of Anna Berger (C01): 0.00 EUR"
+
+  @US-03
+  Scenario: AC US-03.2 Customer sees only their own balance among several customers
+    Given the following customers register:
+      | Name         | Email                    |
+      | Anna Berger  | anna.berger@example.com  |
+      | Ben Huber    | ben.huber@example.com    |
+      | Clara Novak  | clara.novak@example.com  |
+      | David Gruber | david.gruber@example.com |
+      | Elif Yilmaz  | elif.yilmaz@example.com  |
+    When customer "C02" views the balance
+    Then the displayed balance is "Balance of Ben Huber (C02): 0.00 EUR"
