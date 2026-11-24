@@ -1,0 +1,66 @@
+Feature: E1 Register and Manage Account
+  As a Customer
+  I want to register and get a Customer Account
+  So that I can use the Charging Points of the EV Charging Network and see my Balance
+
+  Background:
+    Given a new customer register
+
+  @US-01
+  Scenario: AC US-01.1 Customer registers with name and email
+    When the customer registers with name "Anna Berger" and email "anna.berger@example.com"
+    Then the number of customers is 1
+    And the customer with ID "C01" has the name "Anna Berger" and the email "anna.berger@example.com"
+
+  @US-01
+  Scenario: AC US-01.2 Five customers register
+    When the following customers register:
+      | Name         | Email                    |
+      | Anna Berger  | anna.berger@example.com  |
+      | Ben Huber    | ben.huber@example.com    |
+      | Clara Novak  | clara.novak@example.com  |
+      | David Gruber | david.gruber@example.com |
+      | Elif Yilmaz  | elif.yilmaz@example.com  |
+    Then the number of customers is 5
+    And reading the customer list shows the following output:
+      """
+      Customers:
+        C01: Anna Berger (anna.berger@example.com)
+        C02: Ben Huber (ben.huber@example.com)
+        C03: Clara Novak (clara.novak@example.com)
+        C04: David Gruber (david.gruber@example.com)
+        C05: Elif Yilmaz (elif.yilmaz@example.com)
+      """
+
+
+  @US-02
+  Scenario: AC US-02.1 New customer account starts with balance 0.00 and empty history
+    When the customer registers with name "Ben Huber" and email "ben.huber@example.com"
+    Then the balance of customer "C01" is 0.00
+    And the transaction history of customer "C01" is empty
+
+  @US-02
+  Scenario: AC US-02.2 Registration with an existing email is not saved
+    Given the customer registers with name "Anna Berger" and email "anna.berger@example.com"
+    When the customer registers with name "Anna B." and email "anna.berger@example.com"
+    Then the registration is rejected with the message "Email already registered"
+    And the number of customers is 1
+    But no customer with the name "Anna B." exists
+
+  @US-03
+  Scenario: AC US-03.1 Customer views the balance of a new account
+    Given the customer registers with name "Anna Berger" and email "anna.berger@example.com"
+    When customer "C01" views the balance
+    Then the displayed balance is "Balance of Anna Berger (C01): 0.00 EUR"
+
+  @US-03
+  Scenario: AC US-03.2 Customer sees only their own balance among several customers
+    Given the following customers register:
+      | Name         | Email                    |
+      | Anna Berger  | anna.berger@example.com  |
+      | Ben Huber    | ben.huber@example.com    |
+      | Clara Novak  | clara.novak@example.com  |
+      | David Gruber | david.gruber@example.com |
+      | Elif Yilmaz  | elif.yilmaz@example.com  |
+    When customer "C02" views the balance
+    Then the displayed balance is "Balance of Ben Huber (C02): 0.00 EUR"
