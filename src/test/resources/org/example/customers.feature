@@ -38,3 +38,11 @@ Feature: E1 Register and Manage Account
     When the customer registers with name "Ben Huber" and email "ben.huber@example.com"
     Then the balance of customer "C01" is 0.00
     And the transaction history of customer "C01" is empty
+
+  @US-02
+  Scenario: AC US-02.2 Registration with an existing email is not saved
+    Given the customer registers with name "Anna Berger" and email "anna.berger@example.com"
+    When the customer registers with name "Anna B." and email "anna.berger@example.com"
+    Then the registration is rejected with the message "Email already registered"
+    And the number of customers is 1
+    But no customer with the name "Anna B." exists

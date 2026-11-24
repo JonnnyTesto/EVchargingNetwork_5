@@ -16,6 +16,9 @@ public class CustomerSteps {
     // the customer manager we test in each scenario
     private CustomerManager customerManager;
 
+    // stores the message if a registration is rejected (US-02)
+    private String errorMessage;
+
     @Given("a new customer register")
     public void a_new_customer_register() {
         customerManager = new CustomerManager();
@@ -23,7 +26,11 @@ public class CustomerSteps {
 
     @When("the customer registers with name {string} and email {string}")
     public void the_customer_registers_with_name_and_email(String name, String email) {
-        customerManager.registerCustomer(name, email);
+        try {
+            customerManager.registerCustomer(name, email);
+        } catch (IllegalArgumentException e) {
+            errorMessage = e.getMessage();
+        }
     }
 
     @Then("the number of customers is {int}")
@@ -37,6 +44,7 @@ public class CustomerSteps {
         assertThat(customer.getName()).isEqualTo(expectedName);
         assertThat(customer.getEmail()).isEqualTo(expectedEmail);
     }
+
     @When("the following customers register:")
     public void the_following_customers_register(DataTable dataTable) {
         List<Map<String, String>> rows = dataTable.asMaps();
@@ -62,5 +70,19 @@ public class CustomerSteps {
     public void theTransactionHistoryOfCustomerIsEmpty(String customerId) {
         Customer customer = customerManager.findCustomer(customerId);
         assertThat(customer.getTransactionHistory()).isEmpty();
+    }
+
+    // US-02: the customer is informed that the email already exists
+    @Then("the registration is rejected with the message {string}")
+    public void theRegistrationIsRejectedWithTheMessage(String expectedMessage) {
+        assertThat(errorMessage).isEqualTo(expectedMessage);
+    }
+
+    // US-02: the duplicate registration was not saved
+    @Then("no customer with the name {string} exists")
+    public void noCustomerWithTheNameExists(String name) {
+        for (Customer customer : customerManager.getAllCustomers()) {
+            assertThat(customer.getName()).isNotEqualTo(name);
+        }
     }
 }

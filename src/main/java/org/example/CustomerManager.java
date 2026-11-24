@@ -12,6 +12,13 @@ public class CustomerManager {
     private int nextNumber = 1;
 
     public Customer registerCustomer(String name, String email) {
+        // US-02: an email can only be registered once
+        for (Customer existing : customers) {
+            if (existing.getEmail().equals(email)) {
+                throw new IllegalArgumentException("Email already registered");
+            }
+        }
+
         // creates IDs like C01, C02, ..., C10
         String id = String.format("C%02d", nextNumber);
         nextNumber++;
@@ -33,6 +40,7 @@ public class CustomerManager {
     public List<Customer> getAllCustomers() {
         return customers;
     }
+
     @Override
     public String toString() {
         String result = "Customers:";
